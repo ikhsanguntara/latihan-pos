@@ -17,5 +17,8 @@ export default {
     AppBar,
     Drawer,
   },
+  data: () => ({
+      expandOnHover: false,
+    }),
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
       <!-- App Bars -->
     <v-app-bar app color="primary" dark clipped-left clipped-right>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon @click="setDrawer(!drawer)" />
         <v-toolbar-title style="minn-width: 150px">Latihan API</v-toolbar-title>
         <v-spacer />
            <div style="width:320px">
@@ -23,8 +23,23 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
-name: 'AppBar'
+name: 'AppBar',
+data:() => ({
+
+}),
+
+    computed: {
+      ...mapState(['drawer']),
+    },
+
+    methods: {
+      ...mapMutations({
+        setDrawer: 'SET_DRAWER',
+      }),
+    },
 }
 </script>
 
