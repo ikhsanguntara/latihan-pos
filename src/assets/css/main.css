@@ -12,6 +12,6 @@
 
 .backdrop {
   height: 100%;
-  /* background-color: var(--v-grey-lighten4); */
-background-color: cadetblue;
+  background-color: var(--v-grey-lighten4);
+
 }

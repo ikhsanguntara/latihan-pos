@@ -1,70 +1,106 @@
 <template>
-  <v-container fluid pa-0>
-      
-<form class="w-full max-w-lg">
-  <div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-        First Name
-      </label>
-      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Jane">
-      <p class="text-red-500 text-xs italic">Please fill out this field.</p>
-    </div>
-    <div class="w-full md:w-1/2 px-3">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-        Last Name
-      </label>
-      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe">
-    </div>
-  </div>
-  <div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full px-3">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-        Password
-      </label>
-      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="password" placeholder="******************">
-      <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
-    </div>
-  </div>
-  <div class="flex flex-wrap -mx-3 mb-2">
-    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
-        City
-      </label>
-      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Albuquerque">
-    </div>
-    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
-        State
-      </label>
-      <div class="relative">
-        <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-          <option>New Mexico</option>
-          <option>Missouri</option>
-          <option>Texas</option>
-        </select>
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-          <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-        </div>
-      </div>
-    </div>
-    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
-        Zip
-      </label>
-      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip" type="text" placeholder="90210">
-    </div>
-  </div>
-</form>
-  </v-container>
+    <v-data-table :headers="headers" :items="desserts" item-key="name" class="elevation-1 pa-6">
+        <template v-slot:top>
+
+            <!-- v-container, v-col and v-row are just for decoration purposes. -->
+            <v-container fluid>
+                <v-row>
+
+                    <v-col cols="6">
+                        <v-row class="pa-6">
+                            <!-- Filter for dessert name-->
+                            <v-text-field v-model="dessertFilterValue" type="text" label="Name"></v-text-field>
+                        </v-row>
+                    </v-col>
+
+                    <v-col cols="6">
+                        <v-row class="pa-6">
+                            <!-- Filter for calories -->
+                            <v-select
+                                    :items="caloriesList"
+                                    v-model="caloriesFilterValue"
+                                    label="Calories"
+                            ></v-select>
+                        </v-row>
+                    </v-col>
+
+                </v-row>
+            </v-container>
+
+        </template>
+    </v-data-table>
 </template>
 
 <script>
-export default {
+  // Table info.
 
-}
+  export default {
+    data() {
+      return {
+        // We need some values for our select.
+        caloriesList: [
+          {text: "All", value: null},
+          {text: "Only 237", value: 237},
+          {text: "Only 305", value: 305},
+        ],
+        // Filter models.
+        dessertFilterValue: '',
+        caloriesFilterValue: null,
+        // Table data.
+        desserts: tableData.data,
+      }
+    },
+    computed: {
+      headers() {
+        return [
+          {
+            text: 'Dessert (100g serving)',
+            align: 'left',
+            sortable: false,
+            value: 'name',
+            filter: this.nameFilter,
+          },
+          {
+            text: 'Calories',
+            value: 'calories',
+            filter: this.caloriesFilter,
+          },
+          {text: 'Fat (g)', value: 'fat'},
+          {text: 'Carbs (g)', value: 'carbs'},
+          {text: 'Protein (g)', value: 'protein'},
+          {text: 'Iron (%)', value: 'iron'},
+        ]
+      },
+    },
+    methods: {
+      /**
+       * Filter for dessert names column.
+       * @param value Value to be tested.
+       * @returns {boolean}
+       */
+      nameFilter(value) {
+        // If this filter has no value we just skip the entire filter.
+        if (!this.dessertFilterValue) {
+          return true;
+        }
+        // Check if the current loop value (The dessert name)
+        // partially contains the searched word.
+        return value.toLowerCase().includes(this.dessertFilterValue.toLowerCase());
+      },
+      /**
+       * Filter for calories column.
+       * @param value Value to be tested.
+       * @returns {boolean}
+       */
+      caloriesFilter(value) {
+        // If this filter has no value we just skip the entire filter.
+        if (!this.caloriesFilterValue) {
+          return true;
+        }
+        // Check if the current loop value (The calories value)
+        // equals to the selected value at the <v-select>.
+        return value === this.caloriesFilterValue;
+      }
+    }
+  }
 </script>
-
-<style>
-
-</style>

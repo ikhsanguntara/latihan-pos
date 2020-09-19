@@ -28,7 +28,7 @@
           @click:append="show = !show"
         />
 
-        <v-btn primary block color="primary" @click="login" :disabled="$v.$invalid">Login</v-btn>
+        <v-btn primary block color="primary" @click="loginFunction" :disabled="$v.$invalid">Login</v-btn>
 
         <v-row>
           <v-col>
@@ -103,6 +103,16 @@ export default {
 
   methods: {
     ...mapActions(["login"]),
+    loginFunction() {
+      var auth = {
+        email: this.email,
+        password: this.password
+      }
+      console.log(auth)
+      console.log(this.email)
+      console.log(this.password)
+      this.login(auth)
+    }
   },
 };
 </script>

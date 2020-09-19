@@ -2,7 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import router from '../router'
 import createPersistedState from "vuex-persistedstate";
+import categories from './modules/categories'
 
+import axios from "../axios"
 
 Vue.use(Vuex)
 
@@ -29,9 +31,17 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    login: ({ commit }) => {
+    login: ({ commit },params) => {
       commit("login", "TOKEN");
       router.push("/dashboard");
+      // axios.post("login", params)
+      //   .then((res) => {
+      //     console.log("data", res.data);
+      //     commit("login", res.data.token);
+      //     router.push("/dashboard");
+      //   })
+      //   .catch((error) => console.log(error));
+
     },
     logout: ({ commit }) => {
       commit("logout");
@@ -39,6 +49,6 @@ export default new Vuex.Store({
     }
   },
   modules: {
-
+    categories,
   }
 })
