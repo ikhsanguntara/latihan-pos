@@ -15,12 +15,14 @@ export default new Vuex.Store({
   state: {
     token: null,
     dialog: {},
+    step: 2,
 
   },
   getters: {
     token: (state) => {
       return state.token;
     },
+   
   },
   mutations: {
     login: (state, token) => {
@@ -28,19 +30,22 @@ export default new Vuex.Store({
     },
     logout: (state) => {
       state.token = null;
-    }
+    },
+    set_step(state, payload) {
+      state.step = payload
+    },
   },
   actions: {
     login: ({ commit },params) => {
-      commit("login", "TOKEN");
-      router.push("/dashboard");
-      // axios.post("login", params)
-      //   .then((res) => {
-      //     console.log("data", res.data);
-      //     commit("login", res.data.token);
-      //     router.push("/dashboard");
-      //   })
-      //   .catch((error) => console.log(error));
+      // commit("login", "TOKEN");
+      // router.push("/dashboard");
+      axios.post("login", params)
+        .then((res) => {
+          console.log("data", res.data);
+          commit("login", res.data.token);
+          router.push("/dashboard");
+        })
+        .catch((error) => console.log(error));
 
     },
     logout: ({ commit }) => {

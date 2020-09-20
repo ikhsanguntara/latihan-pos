@@ -1,9 +1,9 @@
 <template>
   <v-row class="fill-height">
-    <v-col
+    <!-- <v-col
       class="d-none d-sm-flex align-center justify-center primary"
       cols="12"
-      sm="7"
+      sm="5"
     >
       <div class="text-center">
         <v-icon
@@ -14,8 +14,8 @@
         ></v-icon>
         <h1 class="white--text">Hospital Apps</h1>
       </div>
-    </v-col>
-    <v-col cols="12" sm="5">
+    </v-col> -->
+    <v-col cols="12" sm="12">
       <v-fade-transition>
         <router-view></router-view>
       </v-fade-transition>
